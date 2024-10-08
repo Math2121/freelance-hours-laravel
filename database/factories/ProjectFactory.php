@@ -17,13 +17,14 @@ class ProjectFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
             //
             'title' => collect(fake()->words(5))->join(' '),
             'description' => htmlspecialchars(fake()->randomHtml()),
             'ends_at' => fake()->dateTimeBetween('now', '+ 3 days'),
             'status' => fake()->randomElement(['open', 'closed']),
-            'created_by' => User::factory(),
+            'user_id' => User::factory(),
             'tech_stack' => fake()->randomElement(['react', 'laravel', 'php', 'vue'])
         ];
     }
