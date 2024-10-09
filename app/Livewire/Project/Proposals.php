@@ -3,11 +3,36 @@
 namespace App\Livewire\Project;
 
 use App\Models\Project;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Proposals extends Component
 {
+
+    public int $qty = 5;
     public Project $project;
+
+    #[Computed()]
+    public function proposals()
+    {
+        return $this->project->proposals()
+            ->orderBy('hours')
+            ->paginate($this->qty);
+    }
+
+    #[Computed()]
+    public function lastProposalTime()
+    {
+        return $this->project->proposals()
+            ->latest()->first()
+            ->created_at->diffForHumans();
+    }
+    public function loadMore()
+    {
+        $this->qty += 5;
+    }
+    #[On('proposal::created')]
     public function render()
     {
         return view('livewire.project.proposals');
